@@ -1,10 +1,7 @@
 #TODO 
-#catch bad inputs in change_wager() - negatives, non-numbers
-#make every You Win or You Lose statement print the amount won or lost too
-#fix - user can double down even if they're out of money
 
-#issues with split() - shouldn't be able to get BJ after split
-#test splitting an already split hand
+#!!!!issues with split() - shouldn't be able to get BJ after split
+
 
 import random
 
@@ -85,7 +82,7 @@ def split(hand, dealer_hand, wager):
         winnings -= wager2
     return winnings
 
-def deal_hands():
+def deal_hands():   #REMOVE TEST FOR SPLITS
     #user_hand = [deal(),deal()]
     user_hand = ['A', 'A']  #FOR TESTING
     dealer_hand = [deal(), deal()]
