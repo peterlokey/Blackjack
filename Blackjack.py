@@ -84,7 +84,6 @@ def split(hand, dealer_hand, wager):
 
 def deal_hands():
     user_hand = [deal(),deal()]
-    #user_hand = ['A', 'A']  #FOR TESTING
     dealer_hand = [deal(), deal()]
     return user_hand, dealer_hand
 
