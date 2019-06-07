@@ -1,6 +1,7 @@
 #TODO 
 
 #!!!!issues with split() - shouldn't be able to get BJ after split
+#consult LC Studio Fireside Story when fixed. Walk through "New Pull," merge, etc.
 
 
 import random
