@@ -82,9 +82,9 @@ def split(hand, dealer_hand, wager):
         winnings -= wager2
     return winnings
 
-def deal_hands():   #REMOVE TEST FOR SPLITS
-    #user_hand = [deal(),deal()]
-    user_hand = ['A', 'A']  #FOR TESTING
+def deal_hands():
+    user_hand = [deal(),deal()]
+    #user_hand = ['A', 'A']  #FOR TESTING
     dealer_hand = [deal(), deal()]
     return user_hand, dealer_hand
 
