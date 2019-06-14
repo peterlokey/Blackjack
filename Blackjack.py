@@ -10,20 +10,22 @@ def deal():
     deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'] * 4
     random.shuffle(deck)
     card = deck.pop()
+    suits = ['H', 'D', 'C', 'S']
+    random.shuffle(suits)
+    suit = suits.pop()
+    card = str(card) + suit
     return card
     
     
 def hand_total(hand):
-    #I wrote this before I learned about dictionaries. 
-    #I think a card:value tuple would be simpler
     tot = 0
     for card in hand:
-        if card == 'J' or card == 'Q' or card == 'K': 
-            card = 10
-        elif card == 'A':
-            card = 11
-        else: card = int(card)
-        tot += card
+        if card[0] == 'J' or card[0] == 'Q' or card[0] == 'K' or card[0] == '1': 
+            val = 10
+        elif card[0] == 'A':
+            val = 11
+        else: val = int(card[0])
+        tot += val
     if tot > 21 and 'A' in hand:   #scores Aces as 1 if total is > 21 
         clone = hand.copy()
         while tot > 21 and 'A' in clone:
@@ -83,9 +85,9 @@ def split(hand, dealer_hand, wager):
         winnings -= wager2
     return winnings
 
-def deal_hands():   #REMOVE TEST FOR SPLITS
-    #user_hand = [deal(),deal()]
-    user_hand = ['A', 'A']  #FOR TESTING
+def deal_hands():   
+    user_hand = [deal(), deal()] 
+    #user_hand = ['A', 'A']  #FOR TESTING
     dealer_hand = [deal(), deal()]
     return user_hand, dealer_hand
 
