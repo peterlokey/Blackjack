@@ -33,12 +33,12 @@ def hand_total(hand):
             tot -= 10
     return tot
 
-def is_blackjack(hand):
-    if hand[0] == 'A':
-        if hand[1] == 'K' or hand[1] == 'Q' or hand[1] == 'J' or hand[1] == 10:
+def is_blackjack(hand): 
+    if hand[0][0] == 'A':
+        if hand[1][0] == 'K' or hand[1][0] == 'Q' or hand[1][0] == 'J' or hand[1][0] == '1':
             return True
-    if hand[0] == 'K' or hand[0] == 'Q' or hand[0] == 'J' or hand[0] == 10:
-        if hand[1] == 'A':
+    if hand[0][0] == 'K' or hand[0][0] == 'Q' or hand[0][0] == 'J' or hand[0][0] == '1':
+        if hand[1][0] == 'A':
             return True
     return False
 
@@ -151,13 +151,13 @@ def play_hand(user_hand, dealer_hand, wager):
 
     print_hands(user_hand, dealer_hand)
     
+    first_action = True
     choice = 0
     while choice != '2':
-        if user_hand[0] == user_hand[1]:    #SPLIT
+        if user_hand[0][0] == user_hand[1][0]:    #SPLIT
             choice = input('1 - Hit \t2 - Stand \t3 - Double Down \t4 - Split')
             if choice == '4':
                 winnings = split(user_hand, dealer_hand, wager)
-                #remember to add the winnings variable to the return when split() calls play_hand()
                 if winnings % 1 == 0: winnings = int(winnings) #drops unnecessary decimal point
                 if winnings >=0:
                     print('In total, you won '+ str(winnings))
@@ -166,32 +166,53 @@ def play_hand(user_hand, dealer_hand, wager):
                     print('In total, you lost '+ str(winnings))
                     return 'Lose', winnings * -1
         
-        else: choice = input('1 - Hit \t2 - Stand \t3 - Double Down')
-        if choice == '1':       #HIT
-            hit(user_hand)
-            print_hands(user_hand, dealer_hand)
-            if hand_total(user_hand) > 21:
-                print('LOSE - You Bust.')
-                input('Press Enter to continue...')
-                return 'Lose', wager
-            print('\n')
-        elif choice == '3':     #DOUBLE DOWN
-            wager = double_down(user_hand, wager)
-            if hand_total(user_hand) > 21:
-                print('LOSE - You Bust.')
-                input('Press Enter to continue...')
-                return 'Lose', wager
-            dealer_hand = play_dealer_hand(dealer_hand)
-            print_final_hands(user_hand, dealer_hand)
-            return decide_winner(user_hand, dealer_hand, wager), wager
-        elif choice == '2':     #STAND
-            dealer_hand = play_dealer_hand(dealer_hand)
-            print_final_hands(user_hand, dealer_hand)
-            if dealer_hand == 'Bust':
-                return 'Win', wager
-            else:
+        elif first_action: #user can only double down before hitting
+            choice = input('1 - Hit \t2 - Stand \t3 - Double Down')
+            if choice == '1':       #HIT
+                first_action = False
+                hit(user_hand)
+                print_hands(user_hand, dealer_hand)
+                if hand_total(user_hand) > 21:
+                    print('LOSE - You Bust.')
+                    input('Press Enter to continue...')
+                    return 'Lose', wager
+                print('\n')
+            elif choice == '3':     #DOUBLE DOWN
+                wager = double_down(user_hand, wager)
+                if hand_total(user_hand) > 21:
+                    print('LOSE - You Bust.')
+                    input('Press Enter to continue...')
+                    return 'Lose', wager
+                dealer_hand = play_dealer_hand(dealer_hand)
+                print_final_hands(user_hand, dealer_hand)
                 return decide_winner(user_hand, dealer_hand, wager), wager
-        else:print('Something has gone wrong!')
+            elif choice == '2':     #STAND
+                dealer_hand = play_dealer_hand(dealer_hand)
+                print_final_hands(user_hand, dealer_hand)
+                if dealer_hand == 'Bust':
+                    return 'Win', wager
+                else:
+                    return decide_winner(user_hand, dealer_hand, wager), wager
+            else:print('Something has gone wrong!')
+        
+        elif not first_action: #called after user has hit (to prevent doubling after hit)
+            choice = input('1 - Hit \t2 - Stand')
+            if choice == '1':       #HIT
+                hit(user_hand)
+                print_hands(user_hand, dealer_hand)
+                if hand_total(user_hand) > 21:
+                    print('LOSE - You Bust.')
+                    input('Press Enter to continue...')
+                    return 'Lose', wager
+                print('\n')
+            elif choice == '2':     #STAND
+                dealer_hand = play_dealer_hand(dealer_hand)
+                print_final_hands(user_hand, dealer_hand)
+                if dealer_hand == 'Bust':
+                    return 'Win', wager
+                else:
+                    return decide_winner(user_hand, dealer_hand, wager), wager
+            else:print('Something has gone wrong!')
 
 def main_menu(bank, wager):
     selection = 0
