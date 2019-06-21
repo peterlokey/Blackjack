@@ -1,94 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, redirect, render_template
+import cgi
 import random
 
 app = Flask(__name__)
 
 app.config['DEBUG'] = True
 
-page_header="""
-<!DOCTYPE html>
-<html>
-    <style>
-        body {
-            background-color: gray;
-        }
-
-        header {
-            position: relative;
-            margin-top: 10px;
-            width: 800px;
-            height: 50px;
-            text-align: center;
-            color: white;
-            font-size: 40px;
-        }
-
-        #game_box {
-            width: 800px;
-            height: 550px; 
-            border-style: solid;
-            border-width: 5px;
-            border-color: black;
-            background-color: green;
-        }
-
-        #dealer_hand {
-            position: fixed;
-            left: 250px;
-            top: 80px;
-            width: 550px;
-            height: 170px;
-            border-style: hidden;
-            border-width: 2px;
-            border-color: black;
-        }
-
-        #user_hand {
-            position: fixed;
-            left: 250px;
-            top: 330px;
-            width: 550px;
-            height: 170px;
-            border-style: hidden;
-            border-width: 2px;
-            border-color: black;
-        }
-
-        img {
-            width: 100px;
-            height: 154px;
-        }
-
-        #hit_button {
-            position: fixed;
-            left: 300px;
-            top: 530px;
-        }
-
-        #stand_button {
-            position: fixed;
-            left: 400px;
-            top: 530px;
-        }
-    </style>
-    <head>
-        <link href="style.css" type="text/css" rel="stylesheet">
-    </head>
-    <body>
-        <header>
-            BLACKJACK
-        </header>
-"""
-
-page_footer="""
-            <div>
-                <button type="button" id="hit_button" action="/hit">Hit</button>
-                <button type="button" id="stand_button">Stand</button>
-            </div>
-        </div>
-    </body>    
-</html>
-"""
 def deal():
     deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'] * 4
     random.shuffle(deck)
@@ -115,19 +32,19 @@ def hit(hand):
 @app.route("/play") 
 def print_hands():
     user_hand, dealer_hand = deal_hands()
-    dealer_print_str = '<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/cardback.png>'
+    dealer_print_str = "<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/cardback.png>"
     user_print_str = ''
     for card in user_hand:
-        user_print_str += '<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{card}.png>'.format(card=card)
+        user_print_str += "<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{card}.png>".format(card=card)
     i=1
     for card in dealer_hand:
         if i == 1: #skips the first card, which must be displayed as face-down
             i += 1
             continue
-        dealer_print_str +='<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{card}.png>'.format(card=card)
-    hands_html = "<div id='game_box'><div id='dealer_hand'>"+dealer_print_str+"</div><div id='user_hand'>"+user_print_str +"</div>"
-    content = page_header + hands_html + page_footer
-    return content
+        dealer_print_str +="<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{card}.png>".format(card=card)
+    
+    #TODO there's a problem with my print strings. The problem could be because they're concatenated on the same line? Try """ ?
+    return render_template("base.html", user_hand=user_print_str, dealer_hand=dealer_print_str)
 
 @app.route("/")
 
@@ -137,23 +54,7 @@ def main():
     wager = 10
     user_input = 0
     
-    menu = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <link href="style.css" type="text/css" rel="stylesheet">
-    </head>
-    <body>
-        <header>
-            BLACKJACK
-        </header>
-        <form action="/play">
-            <input type="submit" value = "Deal" />
-        </form>
-    </body>
-</html>
-"""
-    return menu
+    return render_template('menu.html')
 
         
 #        if user_input == 1: 

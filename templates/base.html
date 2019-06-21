@@ -1,0 +1,29 @@
+
+
+
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <link href="https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/style.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            BLACKJACK
+        </header>
+        <div id='game_box'>
+            <div id='dealer_hand'>
+                {{user_hand}}
+            </div>
+            <div id='user_hand'>
+                {{dealer_hand}}
+            </div>
+        
+
+
+        <form action = "/hit" method="post">
+            
+            <button type="button" id="hit_button">Hit</button>
+        <form action = "/stand" method="post">
+            
+            <button type="button" id="stand_button">Stand</button>
