@@ -32,7 +32,7 @@ def hit(hand):
 @app.route("/play") 
 def print_hands():
     user_hand, dealer_hand = deal_hands()
-    dealer_print_str = "<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/cardback.png>"
+    dealer_print_str = "<img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/cardback.png'>"
     user_print_str = ''
     for card in user_hand:
         user_print_str += "<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{card}.png>".format(card=card)
@@ -44,7 +44,7 @@ def print_hands():
         dealer_print_str +="<img src=https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{card}.png>".format(card=card)
     
     #TODO there's a problem with my print strings. The problem could be because they're concatenated on the same line? Try """ ?
-    return render_template("base.html", user_hand=user_print_str, dealer_hand=dealer_print_str)
+    return render_template("base.html", d2=dealer_hand[1], u1=user_hand[0], u2=user_hand[1])
 
 @app.route("/")
 

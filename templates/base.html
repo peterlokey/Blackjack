@@ -1,11 +1,70 @@
-
-
-
 <!DOCTYPE html>
 <html>
     
     <head>
-        <link href="https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/style.css" type="text/css" rel="stylesheet">
+        <style>
+            body {
+                background-color: gray;
+            }
+
+            header {
+                position: relative;
+                margin-top: 10px;
+                width: 800px;
+                height: 50px;
+                text-align: center;
+                color: white;
+                font-size: 40px;
+            }
+
+            #game_box {
+                width: 800px;
+                height: 550px; 
+                border-style: solid;
+                border-width: 5px;
+                border-color: black;
+                background-color: green;
+            }
+
+            #dealer_hand {
+                position: fixed;
+                left: 250px;
+                top: 80px;
+                width: 550px;
+                height: 170px;
+                border-style: hidden;
+                border-width: 2px;
+                border-color: black;
+            }
+
+            #user_hand {
+                position: fixed;
+                left: 250px;
+                top: 330px;
+                width: 550px;
+                height: 170px;
+                border-style: hidden;
+                border-width: 2px;
+                border-color: black;
+            }
+
+            img {
+                width: 100px;
+                height: 154px;
+            }
+
+            #hit_button {
+                position: fixed;
+                left: 300px;
+                top: 530px;
+            }
+
+            #stand_button {
+                position: fixed;
+                left: 400px;
+                top: 530px;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -13,10 +72,12 @@
         </header>
         <div id='game_box'>
             <div id='dealer_hand'>
-                {{user_hand}}
+                <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/cardback.png'>
+                <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{d2}}.png'>
             </div>
             <div id='user_hand'>
-                {{dealer_hand}}
+                    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{u1}}.png'>
+                    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{u2}}.png'>
             </div>
         
 
