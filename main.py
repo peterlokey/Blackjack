@@ -18,16 +18,23 @@ def deal():
 
 def deal_hands():   
     user_hand = [deal(), deal()]
-    #user_hand = ['A', 'A']  #FOR TESTING
     dealer_hand = [deal(), deal()]
     return user_hand, dealer_hand
 
-@app.route("/hit")
-#hand = get.
-def hit(hand):
-    new_card = deal()
-    hand.append(new_card)
-    return hand
+@app.route("/hit", methods=['POST'])
+def hit():
+    user_hand = request.args.get("user_hand")
+    dealer_hand = request.args.get("dealer_hand")
+    
+    #user_hand.append(deal())
+    #return render_template("base.html", user_hand=user_hand, dealer_hand=dealer_hand)
+    
+    #TODO request.args.get is returning user_hand as a string, not a list
+    
+    var = type(user_hand)
+    print(type(user_hand))
+    print(user_hand)
+    return "<p> {} </p>".format(var)
 
 @app.route("/play") 
 def print_hands():
@@ -44,7 +51,7 @@ def main():
     
     return render_template('menu.html')
 
-        
+"""     
 #        if user_input == 1: 
 #            user_hand, dealer_hand = deal_hands()
 #            result, end_wager = play_hand(user_hand, dealer_hand, wager) 
@@ -71,4 +78,5 @@ def main_menu(bank, wager):
         elif selection == '2': return 2
         elif selection == '3':return 3
         else: print('Bad input.')            
+"""
 app.run()
