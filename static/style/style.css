@@ -43,6 +43,12 @@ header {
     border-color: black;
 }
 
+#user_total {
+    position: fixed;
+    left: 200px;
+    top: 370px;
+}
+
 img {
     width: 100px;
     height: 154px;

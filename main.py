@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, render_template
 import cgi
 import random
+import ast
 
 app = Flask(__name__)
 
@@ -21,25 +22,44 @@ def deal_hands():
     dealer_hand = [deal(), deal()]
     return user_hand, dealer_hand
 
+def hand_total(hand):
+    tot = 0
+    suitless_hand = []
+    for card in hand:
+        suitless_hand.append(card[0])
+    for card in suitless_hand:
+        if card == 'J' or card == 'Q' or card == 'K' or card == '1': 
+            val = 10
+        elif card == 'A':
+            val = 11
+        else: val = int(card)
+        tot += val
+    if tot > 21 and 'A' in suitless_hand:   #scores Aces as 1 if total is > 21 
+        while tot > 21 and 'A' in suitless_hand:
+            suitless_hand.remove('A')
+            tot -= 10
+    return tot
+
 @app.route("/hit", methods=['POST'])
 def hit():
     user_hand = request.args.get("user_hand")
     dealer_hand = request.args.get("dealer_hand")
+
+    user_hand = ast.literal_eval(user_hand)
+    dealer_hand = ast.literal_eval(dealer_hand)
     
-    #user_hand.append(deal())
-    #return render_template("base.html", user_hand=user_hand, dealer_hand=dealer_hand)
+    user_hand.append(deal())
+    user_total = hand_total(user_hand)
+
+    return render_template("base.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total)
     
-    #TODO request.args.get is returning user_hand as a string, not a list
-    
-    var = type(user_hand)
-    print(type(user_hand))
-    print(user_hand)
-    return "<p> {} </p>".format(var)
+
 
 @app.route("/play") 
 def print_hands():
     user_hand, dealer_hand = deal_hands()
-    return render_template("base.html", user_hand=user_hand, dealer_hand=dealer_hand)
+    user_total = hand_total(user_hand)
+    return render_template("base.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total)
 
 @app.route("/")
 
