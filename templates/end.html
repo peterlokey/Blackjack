@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id='dealer_hand'>
+    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{dealer_hand[0]}}.png'>
+    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{dealer_hand[1]}}.png'>
+</div>
+<div id='user_hand'>
+    {% for card in user_hand %}                
+    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{card}}.png'>
+    {% endfor %}
+</div>
+<div id='dealer_total'>
+    <h2>{{dealer_total}}</h2>
+</div>
+<div id='user_total'>
+    <h2>{{user_total}}</h2>
+</div>
+<div id='result'>
+    <h1>{{result}}</h1>
+
+</div>
+
+<form action = "/menu" >
+<input type="submit" class="center_button" value="Play Again">
+</form>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id='dealer_hand'>
+    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/cardback.png'>
+    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{dealer_hand[1]}}.png'>
+</div>
+<div id='user_hand'>
+    {% for card in user_hand %}                
+    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{card}}.png'>
+    {% endfor %}
+</div>
+<div id='user_total'>
+    <h2>{{user_total}}</h2>
+</div>
+
+
+
+<form action = "/hit?user_hand={{user_hand}}&dealer_hand={{dealer_hand}}" method="POST">
+<input type="submit" id="hit_button" value="Hit">
+</form>
+<form action = "/stand?user_hand={{user_hand}}&dealer_hand={{dealer_hand}}" method="post">
+
+<input type="submit" id="stand_button" value="Stand">
+
+{% endblock %}

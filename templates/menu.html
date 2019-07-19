@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link href="../style.css" type="text/css" rel="stylesheet">
-        
-    </head>
-    <body>
-        <header>
-            BLACKJACK
-        </header>
+{% extends 'base.html' %}
+{% block content %}
         <form action="/play">
-            <input type="submit" value = "Deal" />
+            <input class="center_button" type="submit" value="Deal" />
         </form>
     </body>
 </html>
+
+
+{% endblock %}

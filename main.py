@@ -3,6 +3,15 @@ import cgi
 import random
 import ast
 
+#TODO:
+'''
+Check for BJ after deal (user and dealer)
+Double Down
+Split
+
+Implement Betting!!
+'''
+
 app = Flask(__name__)
 
 app.config['DEBUG'] = True
@@ -24,6 +33,9 @@ def deal_hands():
 
 def hand_total(hand):
     tot = 0
+    print('function hand_total')
+    print(hand)         #TEST
+    print(type(hand))   #TEST
     suitless_hand = []
     for card in hand:
         suitless_hand.append(card[0])
@@ -40,6 +52,32 @@ def hand_total(hand):
             tot -= 10
     return tot
 
+def play_dealer_hand(hand):
+    score = hand_total(hand)
+    while score < 17:
+        hand.append(deal())
+        score = hand_total(hand)
+        print('play_dealer_hand end')
+        print('returning' + str(hand))
+    return hand
+
+def decide_winner(user, dealer, wager):
+    user_score = hand_total(user)
+    dealer_score = hand_total(dealer)    
+    if user_score > 21:
+        return 'BUST'
+    if dealer_score > 21:
+        #print('DEALER BUSTS - You win '+ str(wager)+'!')
+        return 'DEALER BUSTS - YOU WIN'
+    if user_score > dealer_score:
+        #print('WIN - You win '+ str(wager)+'!'
+        return 'YOU WIN'
+    if user_score < dealer_score:
+        return 'LOSE'
+    if user_score == dealer_score:
+        return('PUSH')
+  
+
 @app.route("/hit", methods=['POST'])
 def hit():
     user_hand = request.args.get("user_hand")
@@ -50,8 +88,15 @@ def hit():
     
     user_hand.append(deal())
     user_total = hand_total(user_hand)
+    dealer_total = hand_total(dealer_hand)
 
-    return render_template("base.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total)
+    if user_total > 21:
+        dealer_hand = play_dealer_hand(dealer_hand)
+        dealer_total = hand_total(dealer_hand)
+        result = decide_winner(user_hand, dealer_hand, None)
+        return render_template("end.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, dealer_total=dealer_total, result=result)
+
+    return render_template("play.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total)
     
 
 
@@ -59,11 +104,27 @@ def hit():
 def print_hands():
     user_hand, dealer_hand = deal_hands()
     user_total = hand_total(user_hand)
-    return render_template("base.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total)
+    result = decide_winner(user_hand, dealer_hand, None)
+    return render_template("play.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, result=result)
+
+@app.route("/stand", methods=['POST'])
+def stand():
+    user_hand = request.args.get("user_hand")
+    dealer_hand = request.args.get("dealer_hand")
+
+    user_hand = ast.literal_eval(user_hand)
+    dealer_hand = ast.literal_eval(dealer_hand)
+    user_total = hand_total(user_hand)
+    dealer_hand = play_dealer_hand(dealer_hand)
+    dealer_total = hand_total(dealer_hand)
+    result = decide_winner(user_hand, dealer_hand, None)
+    return render_template("end.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, dealer_total=dealer_total, result=result)
+
+@app.route("/menu")
+def menu():
+    return render_template('menu.html')
 
 @app.route("/")
-
-
 def main():
     bank = 100
     wager = 10
