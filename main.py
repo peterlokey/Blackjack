@@ -28,9 +28,7 @@ def deal():
 
 def deal_hands():   
     user_hand = [deal(), deal()]
-    user_hand = ['AH', 'JC'] #THIS IS A TEST FOR BLACKJACK
-    dealer_hand = ['AH', 'JC'] #THIS IS A TEST FOR BLACKJACK
-    #dealer_hand = [deal(), deal()]
+    dealer_hand = [deal(), deal()]
     return user_hand, dealer_hand
 
 def hand_total(hand):
