@@ -5,7 +5,7 @@ import ast
 
 #TODO:
 '''
-Check for BJ after deal (user and dealer)
+
 Double Down
 Split
 
@@ -28,14 +28,13 @@ def deal():
 
 def deal_hands():   
     user_hand = [deal(), deal()]
-    dealer_hand = [deal(), deal()]
+    user_hand = ['AH', 'JC'] #THIS IS A TEST FOR BLACKJACK
+    dealer_hand = ['AH', 'JC'] #THIS IS A TEST FOR BLACKJACK
+    #dealer_hand = [deal(), deal()]
     return user_hand, dealer_hand
 
 def hand_total(hand):
     tot = 0
-    print('function hand_total')
-    print(hand)         #TEST
-    print(type(hand))   #TEST
     suitless_hand = []
     for card in hand:
         suitless_hand.append(card[0])
@@ -76,6 +75,19 @@ def decide_winner(user, dealer, wager):
         return 'LOSE'
     if user_score == dealer_score:
         return('PUSH')
+
+def is_blackjack(hand): 
+    suitless_hand = []
+    for card in hand:
+        suitless_hand.append(card[0])
+    
+    if suitless_hand[0][0] == 'A':
+        if suitless_hand[1][0] == 'K' or suitless_hand[1][0] == 'Q' or suitless_hand[1][0] == 'J' or suitless_hand[1][0] == '1':
+            return True
+    if suitless_hand[0][0] == 'K' or suitless_hand[0][0] == 'Q' or suitless_hand[0][0] == 'J' or suitless_hand[0][0] == '1':
+        if suitless_hand[1][0] == 'A':
+            return True
+    return False
   
 
 @app.route("/hit", methods=['POST'])
@@ -104,7 +116,17 @@ def hit():
 def print_hands():
     user_hand, dealer_hand = deal_hands()
     user_total = hand_total(user_hand)
+    dealer_total = hand_total(dealer_hand)
     result = decide_winner(user_hand, dealer_hand, None)
+
+    if is_blackjack(user_hand):
+        result = "BLACKJACK!!!"
+        if is_blackjack(dealer_hand):
+            result = "PUSH"
+        return render_template("end.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, dealer_total=dealer_total, result=result)
+    if is_blackjack(dealer_hand):
+        result = "DEALER BLACKJACK. YOU LOSE."
+        return render_template("end.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, dealer_total=dealer_total, result=result)
     return render_template("play.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, result=result)
 
 @app.route("/stand", methods=['POST'])

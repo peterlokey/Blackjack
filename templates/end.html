@@ -2,8 +2,9 @@
 {% block content %}
 
 <div id='dealer_hand'>
-    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{dealer_hand[0]}}.png'>
-    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{dealer_hand[1]}}.png'>
+    {% for card in dealer_hand %}                
+    <img src='https://raw.githubusercontent.com/peterlokey/Blackjack/front-end-dev/images/{{card}}.png'>
+    {% endfor %}
 </div>
 <div id='user_hand'>
     {% for card in user_hand %}                
