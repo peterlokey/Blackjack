@@ -22,4 +22,14 @@
 <input type="submit" id="stand_button" value="Stand">
 </form>
 
+<form action = "/double_down?user_hand={{user_hand}}&dealer_hand={{dealer_hand}}" method="POST">
+    <input type="submit" id="double_button" value="Double Down">
+    </form>
+
+{% if paired == "True" %}
+    <form action = "/split?user_hand={{user_hand}}&dealer_hand={{dealer_hand}}" method="POST">
+    <input type="submit" id="split_button" value="Split">
+    </form>
+{% endif %}
+
 {% endblock %}

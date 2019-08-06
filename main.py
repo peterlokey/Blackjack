@@ -5,9 +5,7 @@ import ast
 
 #TODO:
 '''
-
-Double Down
-Split
+Create functions for Double Down & Split
 
 Implement Betting!!
 '''
@@ -54,8 +52,6 @@ def play_dealer_hand(hand):
     while score < 17:
         hand.append(deal())
         score = hand_total(hand)
-        print('play_dealer_hand end')
-        print('returning' + str(hand))
     return hand
 
 def decide_winner(user, dealer, wager):
@@ -115,6 +111,10 @@ def print_hands():
     user_hand, dealer_hand = deal_hands()
     user_total = hand_total(user_hand)
     dealer_total = hand_total(dealer_hand)
+    paired = "False"
+    if user_hand[0][0] == user_hand[1][0]:
+        paired = "True"
+
     result = decide_winner(user_hand, dealer_hand, None)
 
     if is_blackjack(user_hand):
@@ -125,7 +125,7 @@ def print_hands():
     if is_blackjack(dealer_hand):
         result = "DEALER BLACKJACK. YOU LOSE."
         return render_template("end.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, dealer_total=dealer_total, result=result)
-    return render_template("play.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, result=result)
+    return render_template("play.html", user_hand=user_hand, dealer_hand=dealer_hand, user_total=user_total, result=result, paired=paired)
 
 @app.route("/stand", methods=['POST'])
 def stand():

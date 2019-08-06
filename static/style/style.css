@@ -72,6 +72,18 @@ img {
     top: 530px;
 }
 
+#double_button {
+    position: fixed;
+    left: 257px;
+    top: 570px;
+}
+
+#split_button {
+    position: fixed;
+    left: 402px;
+    top: 570px;
+}
+
 #result {
     position: fixed;
     left: 300px;
